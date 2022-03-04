@@ -20,9 +20,9 @@ public class NalydInspector : Editor
         path = PlayerPrefs.GetString(SceneManager.GetActiveScene().name);
         RenderButtonStyle = SetRButtonStyle();
         //LinkButtonStyle = SetLinkButtonStyle();
-        pikas[0] = Resources.Load("pika", typeof(Texture2D)) as Texture2D;
-        pikas[1] = Resources.Load("pikago", typeof(Texture2D)) as Texture2D;
-        pikas[2] = Resources.Load("pika_offline", typeof(Texture2D)) as Texture2D;
+        pikas[0] = Resources.Load("Play", typeof(Texture2D)) as Texture2D;
+        pikas[1] = Resources.Load("Record", typeof(Texture2D)) as Texture2D;
+        pikas[2] = Resources.Load("Offline", typeof(Texture2D)) as Texture2D;
     }
 
     private GUIStyle SetRButtonStyle() {
