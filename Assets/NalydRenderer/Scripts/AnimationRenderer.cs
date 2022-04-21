@@ -16,9 +16,9 @@ public class AnimationRenderer : MonoBehaviour {
     [Tooltip("Do you want to select the folder of those saving pics?")]
     [Rename("是否設定輸出資料夾?")]
     public bool Folder_Selection = true; //是否指定存圖路徑
-    private readonly string File_Type = "jpg";
+    private readonly string _fileType = "jpg";
     string path = "Image_Sequence"; //預設資料夾為Image_Sequence
-    AnimationEvent CaptureEvent;
+    AnimationEvent _captureEvent;
     //[Rename("動畫Animator")]
     //public Animator animator;
     [Rename("動畫Animation")]
@@ -78,11 +78,11 @@ public class AnimationRenderer : MonoBehaviour {
                 Rendering = true;
                 for (int i = Start_Frame; i <= End_Frame; ++i)
                 {
-                    CaptureEvent = new AnimationEvent();
-                    CaptureEvent.time = i / Capture_FPS;
-                    CaptureEvent.functionName = "Cap_Text2D";
-                    CaptureEvent.intParameter = i;
-                    Ani_Clip.AddEvent(CaptureEvent);
+                    _captureEvent = new AnimationEvent();
+                    _captureEvent.time = i / Capture_FPS;
+                    _captureEvent.functionName = "Cap_Text2D";
+                    _captureEvent.intParameter = i;
+                    Ani_Clip.AddEvent(_captureEvent);
                 }
             }
             else {
@@ -108,11 +108,11 @@ public class AnimationRenderer : MonoBehaviour {
         screenshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
         screenshot.Apply();
         byte[] bytes = screenshot.EncodeToJPG(JPG_Quality);
-        string localURL = path + "/" + FileName + "_" + i.ToString() + "." + File_Type;
+        string localURL = path + "/" + FileName + "_" + i.ToString() + "." + _fileType;
         File.WriteAllBytes(localURL, bytes);
         Destroy(screenshot);
         SavedFrameCount = i;
-        Debug.Log(FileName + "_" + i + "." + File_Type + " Saved to " + path);
+        Debug.Log(FileName + "_" + i + "." + _fileType + " Saved to " + path);
         
         if (i == End_Frame)
         {

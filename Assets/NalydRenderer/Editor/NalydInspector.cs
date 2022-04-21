@@ -7,22 +7,22 @@ using UnityEngine.SceneManagement;
 public class NalydInspector : Editor
 {
     public float TotalFrames;
-    public string path;
-    AnimationRenderer AR;
-    GUIStyle RenderButtonStyle;
-    GUIStyle LinkButtonStyle;
-    Texture2D[] pikas = new Texture2D[3];
+    public string Path;
+    AnimationRenderer animationRenderer;
+    GUIStyle renderButtonStyle;
+    //GUIStyle LinkButtonStyle;
+    Texture2D[] icons = new Texture2D[3];
     
     //bool Rendering;
     private void OnEnable()
     {
-        AR = target as AnimationRenderer;
-        path = PlayerPrefs.GetString(SceneManager.GetActiveScene().name);
-        RenderButtonStyle = SetRButtonStyle();
+        animationRenderer = target as AnimationRenderer;
+        Path = PlayerPrefs.GetString(SceneManager.GetActiveScene().name);
+        renderButtonStyle = SetRButtonStyle();
         //LinkButtonStyle = SetLinkButtonStyle();
-        pikas[0] = Resources.Load("Play", typeof(Texture2D)) as Texture2D;
-        pikas[1] = Resources.Load("Record", typeof(Texture2D)) as Texture2D;
-        pikas[2] = Resources.Load("Offline", typeof(Texture2D)) as Texture2D;
+        icons[0] = Resources.Load("Play", typeof(Texture2D)) as Texture2D;
+        icons[1] = Resources.Load("Record", typeof(Texture2D)) as Texture2D;
+        icons[2] = Resources.Load("Offline", typeof(Texture2D)) as Texture2D;
     }
 
     private GUIStyle SetRButtonStyle() {
@@ -50,11 +50,11 @@ public class NalydInspector : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        TotalFrames = (AR.End_Frame - AR.Start_Frame) + 1;
-        ProgressBar(AR.SavedFrameCount / TotalFrames, "現在算到第" + AR.SavedFrameCount.ToString() + "張，總共 " + TotalFrames + " 張");
+        TotalFrames = (animationRenderer.End_Frame - animationRenderer.Start_Frame) + 1;
+        ProgressBar(animationRenderer.SavedFrameCount / TotalFrames, "現在算到第" + animationRenderer.SavedFrameCount.ToString() + "張，總共 " + TotalFrames + " 張");
         //EditorGUILayout.LabelField("輸出資料夾：", path);
-        if (GUILayout.Button("前往輸出資料夾, 目前路徑：" + path)) {
-            string to = path.Replace(@"/", @"\");
+        if (GUILayout.Button("前往輸出資料夾, 目前路徑：" + Path)) {
+            string to = Path.Replace(@"/", @"\");
             System.Diagnostics.Process.Start("explorer.exe", to);
         }
         RenderButton();
@@ -66,15 +66,15 @@ public class NalydInspector : Editor
     }
 
     private void RenderButton() {
-        if (!AR.Rendering)
+        if (!animationRenderer.Rendering)
         {
-            if (AR.Ani_Clip != null)
+            if (animationRenderer.Ani_Clip != null)
             {
-                if (AR.Capture_FPS != 0)
+                if (animationRenderer.Capture_FPS != 0)
                 {
-                    if (AR.EventCapture)
+                    if (animationRenderer.EventCapture)
                     {
-                        if (GUILayout.Button(pikas[0], RenderButtonStyle))
+                        if (GUILayout.Button(icons[0], renderButtonStyle))
                         {
                             EditorApplication.isPlaying = true;
                         }
@@ -85,10 +85,10 @@ public class NalydInspector : Editor
         }
         else
         {
-            GUILayout.Button(pikas[1], RenderButtonStyle);
+            GUILayout.Button(icons[1], renderButtonStyle);
             return;
         }
-        GUILayout.Button(pikas[2], RenderButtonStyle);
+        GUILayout.Button(icons[2], renderButtonStyle);
     }
     
 }
